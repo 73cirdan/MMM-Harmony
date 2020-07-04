@@ -4,7 +4,7 @@ Magic Mirror Module for interacting with logitech harmony hub
 # Install
 from  ~/MagicMirror/modules folder: 
 `git clone https://github.com/73cirdan/MMM-Harmony MMM-Harmony`
-Change into MMM-Harmomny and install
+Change into MMM-Harmony and install
 `cd MMM-Harmony` 
 `npm install`
 
