@@ -1,0 +1,25 @@
+{
+  "name": "MMM-Harmony",
+  "version": "0.0.1",
+  "description": "MagicMirrorModule that use the Harmony Hub API to list/interact with Logitech remote control hub",
+  "keywords": [
+    "magic",
+    "mirror",
+    "logitech",
+    "harmony",
+    "harmony-hub",
+    "websocket",
+    "API"
+  ],
+  "author": "Cirdan",
+  "homepage": "https://github.com/73cirdan/MMM-Harmony/blob/master/README.md",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/73cirdan/MMM-Harmony.git"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "harmonyhub-api": "^1.0.7"
+  },
+  "devDependencies": {}
+}
