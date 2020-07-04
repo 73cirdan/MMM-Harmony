@@ -5,7 +5,8 @@ Magic Mirror Module for interacting with logitech harmony hub
 from  ~/MagicMirror/modules folder: 
 `git clone https://github.com/73cirdan/MMM-Harmony MMM-Harmony`
 Change into MMM-Harmony and install
-`cd MMM-Harmony` 
+`cd MMM-Harmony`
+
 `npm install`
 
 After install change into:
@@ -29,6 +30,6 @@ Found Logitech Harmony Hub
                         header: "MMM-Harmony",
                         config: {
                                 hubHost: 'XXX.XXX.XXX.XXX', ip adres of your harmony remote hub, check your router
-                                hubId: 'An 8 digit number', remote id off your hub, check install for obtaining it
+                                hubId: 'An 8 digit number', remote id of your hub, check install for obtaining it
                         }
                 },
