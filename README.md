@@ -15,8 +15,9 @@ And run the following, change XXX.XXX.XXX.XXX for the IP adres of the harmony hu
 
 The result shows the Harmony remote ID (and your username)
 
-```Found Logitech Harmony Hub
----------------------------`
+```
+Found Logitech Harmony Hub
+---------------------------
  - Username    : something@yourecognize
  - Remote id   : 12345678
 ```
