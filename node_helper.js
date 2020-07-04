@@ -3,7 +3,7 @@
 /* Magic Mirror
  * Module: MMM-Harmony
  *
- * by Cirdan
+ * by Cirdan.
  * MIT Licensed.
  */
 
