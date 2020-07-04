@@ -4,7 +4,7 @@
  * Module: MMM-Harmony
  *
  * by Cirdan
- * MIT Licensed.
+ * MIT Licensed
  */
 
 const NodeHelper = require('node_helper');
