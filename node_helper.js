@@ -15,7 +15,7 @@ module.exports = NodeHelper.create({
 	start: function() {
 		this.started = false;
 		this.config = null;
-		this.hub = null;
+		this.hubs = [];
 		this.activities = [];
 	},
 
@@ -25,28 +25,34 @@ module.exports = NodeHelper.create({
 	getData: function() {
 		var self = this;
 
-		this.hub.connect()
+		for (const hub of Object.values(this.hubs))
+		{
+		    hub.connect()
     			.then((config) => {
 
-        			this.hub.getCurrentActivity().then((id) => {	
-					var result="Unknown";
+        			hub.getCurrentActivity().then((id) => {	
         				config.activity.forEach(activity => {
 						if  (activity.id == id) {
-							result = activity.label;
+							console.log('Connected to the hub activity=' + activity.label);
+ 							var payload = { 
+								"name": this.getHubName(hub.hubRemoteId),
+								"activity": activity.label
+							};
+ 							self.sendSocketNotification("DATA", payload);
 						}
         				});
-					console.log('Connected to the hub: ' + result);
-                                	self.sendSocketNotification("DATA", result);
-				})
-				.catch((error) => {
-					console.log('GETACT ERROR: '+error);
 				});
     			})
 			.catch((error) => {
 				console.log('CONNECT ERROR: '+error);
+				var payload = { 
+					"name": this.getHubName(hub.hubRemoteId),
+					"activity": "No connection"
+				};
+ 				self.sendSocketNotification("ERROR", payload);
 			});
 		
-				
+		}		
 		setTimeout(function() { self.getData(); }, this.config.refreshInterval);
 	},
 
@@ -55,10 +61,25 @@ module.exports = NodeHelper.create({
 			this.config = payload;
 			this.sendSocketNotification("STARTED", true);
 			console.log(this.name + ": configured");
-			console.log('MMM-Harmony => connecting to '+this.config.hubHost);
-			this.hub = new HarmonyHub(this.config.hubHost, this.config.hubId);
+		
+			for (const hub of Object.values(this.config.hubs))
+			{
+				console.log('MMM-Harmony => connecting to '+hub.hubName);
+				this.hubs.push(new HarmonyHub(hub.hubHost, hub.hubId));
+			}
 			this.getData();
 			this.started = true;
 		}
+	},
+	
+	/*
+	 * Given an hub id, find the hubname
+	 */
+	getHubName: function( hubId ) {
+		for (const hub of Object.values(this.config.hubs))
+		{
+			if (hub.hubId==hubId) { return hub.hubName };
+		}
+		return "Harmonyhub";
 	}
 });

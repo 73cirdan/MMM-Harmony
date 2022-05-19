@@ -13,9 +13,6 @@ Module.register("MMM-Harmony",{
 	defaults: {
 		css: "MMM-Harmony.css",
 		refreshInterval: 1000 * 60 * 1, //refresh every 1 minute(s)
-		//autohide: false,
-		//displaymode: "smooth",
-		//faultToleration: 5,
 	},
 
 	// Define required scripts.
@@ -34,12 +31,10 @@ Module.register("MMM-Harmony",{
 
 	// Define start sequence.
 	start: function() {
+	
+		this.hubs = {};
 		Log.info("Starting module: " + this.name);
 		this.sendSocketNotification('CONFIG', this.config);
-        	//if (!["line", "smooth", "block"].includes(this.config.displaymode)) {
-			//Log.warn(this.name + ": invalid or no displaymode in config, valid values are: line, smooth or block");
-			//this.confg.displaymode = "smooth";
-		//}
 	},
 
  	// Override dom generator.
@@ -48,11 +43,47 @@ Module.register("MMM-Harmony",{
 		if (!wrapper) {
                    wrapper = document.createElement("div");
     		   wrapper.id = "harmonystate";
-		   wrapper.innerHTML = this.translate("STARTING");
                    wrapper.className = "small light label_text";
+
+                   text = document.createElement("div");
+    		   text.id = "harmonytext";
+		   text.innerHTML = this.translate("STARTING");
+		   wrapper.appendChild(text);
+
+
+        	   table = document.createElement("table");
+	           table.className = "small thin light";
+    		   table.id = "harmonytable";
+		   wrapper.appendChild(table);
+
 		}
                 return wrapper;
         },
+
+	showHubs: function(hubs){
+
+
+        	table = document.createElement("table");
+	        table.className = "small thin light";
+    		table.id = "harmonytable";
+
+                for (const key in hubs)
+		{
+        		const row = document.createElement("tr");
+			table.appendChild(row)
+		
+        		const name = document.createElement("td");
+        		const value = document.createElement("td");
+            		name.innerHTML = key;
+            		value.innerHTML = hubs[key];
+        		row.appendChild(name);
+        		row.appendChild(value);
+		}
+		var wrapper = document.getElementById('harmonystate');
+		var tableold = document.getElementById('harmonytable');
+		wrapper.replaceChild( table, tableold );
+
+	},
 
 	/* socketNotificationReceive(notification)
 	 * used to get communication from the nodehelper
@@ -62,29 +93,28 @@ Module.register("MMM-Harmony",{
 	 */
        	socketNotificationReceived: function(notification, payload) {
 
-		wrapper = document.getElementById('harmonystate');
+		text = document.getElementById('harmonytext');
+		text.style.display = '';
 
 		// configured succesfully
     		if (notification === "STARTED") {
 			Log.info(this.name + ": configured");
-			wrapper.innerHTML = this.translate("STARTED");
+			text.innerHTML = this.translate("STARTED");
 		} else 
-       		// error received from node_helper.js
-       		if (notification === "ERROR") {
-			Log.error(this.name + ": error: " + payload);
-			wrapper.innerHTML = this.translate("ERROR");
-       		} else
 		// data received
-       		if (notification === "DATA") {
+       		if (notification === "DATA" || notification === "ERROR") {
        			// data received from node_helper.js, but empty payload
 			if (!payload || payload ==="") {
 				Log.warn(this.name + "no payload ");
-				wrapper.innerHTML = "no payload";
+		   		text.innerHTML = this.translate("NODATA");
 			} else 
 			// data received and payload to parse
 			{
-				Log.warn(this.name + "payload: " + payload);
-				wrapper.innerHTML = payload;
+				this.hubs[ payload.name ] = (notification==="ERROR"?
+								this.translate(payload.activity):
+								payload.activity);
+				this.showHubs(this.hubs);
+				text.style.display = 'none'; // no need to show the status line
 			}
        	 	}
                 this.updateDom();
