@@ -27,9 +27,19 @@ Found Logitech Harmony Hub
                 {
                         module: "MMM-Harmony",
                         position: "top_right",
-                        header: "MMM-Harmony",
+                        header: "Whats happening",
                         config: {
-                                hubHost: 'XXX.XXX.XXX.XXX', ip adres of your harmony remote hub, check your router
-                                hubId: 'An 8 digit number', remote id of your hub, check install for obtaining it
+                                hubs: [
+                                        {
+                                                hubName: "Living room",     // The name to show in the gui
+                                                hubHost: 'XXX.XXX.XXX.XXX', // ip address of your harmony remote hub, check your router
+                                                hubId: 'An 8 digit number', // remote id of your hub, check install for obtaining it
+                                        },
+                                        {       //delete or add more hubs if you like
+                                                hubName: "2nd hub",
+                                                hubHost: 'ip address',
+                                                hubId: 'An 8 digit number',
+                                        }
+                                ]
                         }
                 },
