@@ -71,13 +71,18 @@ Module.register("MMM-Harmony",{
 		{
         		const row = document.createElement("tr");
 			table.appendChild(row)
-		
-        		const name = document.createElement("td");
-        		const value = document.createElement("td");
-            		name.innerHTML = key;
-            		value.innerHTML = hubs[key];
-        		row.appendChild(name);
-        		row.appendChild(value);
+
+                        const name = document.createElement("td");
+                        //name.className = "fa fa-house-user align-right"; // an icon
+                        name.className = "fa fa-" + key; // an icon
+                        //name.innerHTML = key; // a text label
+                        row.appendChild(name);
+
+                        const value = document.createElement("td");
+                        value.innerHTML = hubs[key];
+                        value.className = "small light table_cell";
+                        row.appendChild(value);
+
 		}
 		var wrapper = document.getElementById('harmonystate');
 		var tableold = document.getElementById('harmonytable');
